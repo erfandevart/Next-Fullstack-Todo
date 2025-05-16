@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useState } from "react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-function SigninPage() {
+function SigninPage({ session }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
 
-  const { status } = useSession();
+  // const { status } = useSession();
 
-  useEffect(() => {
-    if (status === "authenticated") router.replace("/");
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === "authenticated") router.replace("/");
+  // }, [status]);
 
   const loginHandler = async () => {
     const res = await signIn("credentials", {
@@ -50,3 +50,21 @@ function SigninPage() {
 }
 
 export default SigninPage;
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        //موقت
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
