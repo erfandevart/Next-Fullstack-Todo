@@ -1,4 +1,4 @@
-import { Model, models, Schema, Schema } from "mongoose";
+import { models, Schema, model } from "mongoose";
 
 const userSchema = new Schema({
   email: {
@@ -21,6 +21,6 @@ const userSchema = new Schema({
 });
 
 //اگر داخل مدل یوزر بود که هیچی اگر نبود مدل رو براساس اسکیما بساز
-const User = models.User || Model("User", userSchema);
+const User = models.User || model("User", userSchema);
 
 export default User;
