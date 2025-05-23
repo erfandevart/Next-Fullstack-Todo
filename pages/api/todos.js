@@ -41,8 +41,30 @@ async function handler(req, res) {
 
     res.status(201).json({ status: "success", message: "Todo created!" });
   } else if (req.method === "GET") {
+    console.log(user.todos);
+    // [
+    //   {
+    //     title: 'todo#1',
+    //     status: 'todo',
+    //     _id: new ObjectId('6830a98a028f08ba6af590d8')
+    //   },...]
     const sortedData = sortTodos(user.todos);
     res.status(200).json({ status: "success", data: { todos: sortedData } });
+  }else if (req.method === "PATCH") {
+    const { id, status } = req.body;
+
+    if (!id || !status) {
+      return res
+        .status(422)
+        .json({ status: "failed", message: "Invalid data!" });
+    }
+
+    const result = await User.updateOne(
+      { "todos._id": id },
+      { $set: { "todos.$.status": status } }
+    );
+    console.log(result);
+    res.status(200).json({ status: "success" });
   }
 }
 export default handler;
