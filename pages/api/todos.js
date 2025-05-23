@@ -1,9 +1,9 @@
-import User from "@/models/User";
-import connectDB from "@/utils/connectDB";
-import { sortTodos } from "@/utils/sortTodos";
+import connectDB from "../../utils/connectDB";
 import { getSession } from "next-auth/react";
+import User from "../../models/User";
+import { sortTodos } from "../../utils/sortTodos";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     await connectDB();
   } catch (err) {
@@ -14,49 +14,35 @@ export default async function handler(req, res) {
   }
 
   const session = await getSession({ req });
-
   if (!session) {
     return res
       .status(401)
-      .json({ status: "failed", message: "You are not logged in" });
+      .json({ status: "failed", message: "You are not logged in!" });
   }
 
   const user = await User.findOne({ email: session.user.email });
-
   if (!user) {
-    return res.status(404).json({
-      status: "failed",
-      message: "User not found",
-    });
+    return res
+      .status(404)
+      .json({ status: "failed", message: "User doesn't exsit!" });
   }
 
   if (req.method === "POST") {
     const { title, status } = req.body;
 
     if (!title || !status) {
-      return res.status(422).json({
-        status: "failed",
-        message: "Invalid data!",
-      });
+      return res
+        .status(422)
+        .json({ status: "failed", message: "Invaild data!" });
     }
 
-    user.todos.push({
-      title,
-      status,
-    });
-
+    user.todos.push({ title, status });
     user.save();
 
-    res.status(201).json({
-      status: "success",
-      message: "Todo added successfully",
-      data: user,
-    });
+    res.status(201).json({ status: "success", message: "Todo created!" });
   } else if (req.method === "GET") {
     const sortedData = sortTodos(user.todos);
-    res.status(200).json({
-      status: "success",
-      data: { todos: sortedData },
-    });
+    res.status(200).json({ status: "success", data: { todos: sortedData } });
   }
 }
+export default handler;

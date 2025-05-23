@@ -1,6 +1,6 @@
-import connectDB from "../../../utils/connectDB";
-import User from "../../../models/User";
-import { hashPassword } from "../../../utils/auth";
+import User from "@/models/User";
+import { hashPassword } from "@/utils/auth";
+import connectDB from "@/utils/connectDB";
 
 async function handler(req, res) {
   if (req.method !== "POST") return;
