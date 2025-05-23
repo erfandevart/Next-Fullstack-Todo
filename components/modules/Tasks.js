@@ -1,9 +1,7 @@
 import { RiMastodonLine } from "react-icons/ri";
 import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 
-function Tasks({ data, next, back, fetchTodos }) {
-  const changeStatus = async (id, status) => {};
-
+function Tasks({ data }) {
   return (
     <div className="tasks">
       {data?.map((i) => (
@@ -11,7 +9,6 @@ function Tasks({ data, next, back, fetchTodos }) {
           <span className={i.status}></span>
           <RiMastodonLine />
           <h4>{i.title}</h4>
-
         </div>
       ))}
     </div>
