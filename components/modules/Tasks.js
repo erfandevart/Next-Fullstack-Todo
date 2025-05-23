@@ -1,7 +1,8 @@
 import { RiMastodonLine } from "react-icons/ri";
-import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 
 function Tasks({ data }) {
+  console.log(data);
+
   return (
     <div className="tasks">
       {data?.map((i) => (
