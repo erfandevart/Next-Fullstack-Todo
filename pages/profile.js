@@ -1,12 +1,13 @@
-import AddTodoPage from "@/components/templates/AddTodoPage";
+import ProfilePage from "@/components/templates/ProfilePage";
 import { getSession } from "next-auth/react";
 import React from "react";
 
-function AddTodo() {
-  return <AddTodoPage />;
+function Profile() {
+  return <ProfilePage />;
 }
 
-export default AddTodo;
+export default Profile;
+
 
 export async function getServerSideProps({ req }) {
   const session = await getSession({ req });
@@ -22,3 +23,4 @@ export async function getServerSideProps({ req }) {
 
   return { props: {} };
 }
+
